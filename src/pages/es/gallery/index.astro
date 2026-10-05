@@ -73,6 +73,8 @@ if (fs.existsSync(galleryDirPath)) {
 	});
 }
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 // Map each category to its matched images (sorted naturally)
 const galleryItems = categories.map(cat => {
 	// Match pattern: "lamoge.jpg", "lamoge1.jpg", "lamoge-2.jpg", "lamoge_03.jpg" etc.
@@ -81,7 +83,7 @@ const galleryItems = categories.map(cat => {
 	const matchedImages = diskFiles
 		.filter(filename => idRegex.test(filename))
 		.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
-		.map(filename => `/gallery/${filename}`);
+		.map(filename => `${base}/gallery/${filename}`);
 
 	return {
 		...cat,
