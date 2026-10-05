@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Dr. Felipe F. Tapia | Geólogo Estructural & Investigador" lang="es">
+	<main class="w-full">
+		<!-- Hero Section -->
+		<section class="relative w-full overflow-hidden bg-slate-950 text-white border-b border-slate-800">
+			<!-- Background gradients and glows -->
+			<div class="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-slate-950 to-emerald-950/70 z-0"></div>
+			<div class="absolute top-10 right-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-blob pointer-events-none"></div>
+			<div class="absolute bottom-10 left-10 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl animate-blob animation-delay-2000 pointer-events-none"></div>
+
+			<div class="max-w-5xl mx-auto px-6 py-20 md:py-28 relative z-10">
+				<div class="flex flex-col md:flex-row gap-10 md:gap-14 items-center">
+					<!-- Profile picture -->
+					<div class="relative group flex-shrink-0">
+						<div class="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-500"></div>
+						<div class="relative w-44 h-44 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-slate-900 shadow-2xl bg-slate-800">
+							<img 
+								src="/profile.jpg" 
+								alt="Dr. Felipe F. Tapia" 
+								class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+								onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+							/>
+							<div class="hidden w-full h-full bg-slate-800 items-center justify-center text-slate-300 font-display font-bold text-5xl">
+								FT
+							</div>
+						</div>
+					</div>
+
+					<div class="text-center md:text-left space-y-5">
+						<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-semibold tracking-wide uppercase">
+							CONICET &bull; IDEAN &bull; UBA
+						</div>
+						<h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-white drop-shadow-sm">
+							Dr. Felipe F. Tapia
+						</h1>
+						<h2 class="text-xl md:text-2xl text-blue-200 font-display font-medium">
+							Geólogo Estructural &bull; Investigador CONICET &bull; Consultor
+						</h2>
+						<p class="text-slate-300 max-w-2xl leading-relaxed text-base md:text-lg">
+							Investigador Asistente en el Laboratorio de Modelado Geológico (LaMoGe), IDEAN (CONICET - Universidad de Buenos Aires) y Jefe de Trabajos Prácticos en FCEN-UBA. Especialista en tectónica andina, modelado analógico y numérico, y análisis de cuencas para exploración energética y científica.
+						</p>
+						<div class="flex flex-wrap justify-center md:justify-start gap-4 pt-3">
+							<a 
+								href="/CV-may_2026%20(1).pdf" 
+								target="_blank" 
+								class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl shadow-lg shadow-blue-600/30 transition-all duration-300 flex items-center gap-2"
+							>
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+								CV Académico
+							</a>
+							<a 
+								href="/Tapia_Felipe_CV.pdf" 
+								target="_blank" 
+								class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 font-medium rounded-xl transition-all duration-300 flex items-center gap-2"
+							>
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+								CV Industria
+							</a>
+							<a 
+								href="/es/contact" 
+								class="px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium rounded-xl transition-all duration-300"
+							>
+								Contactar
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Áreas de Especialidad -->
+		<section class="py-20 bg-slate-50 dark:bg-slate-950 transition-colors">
+			<div class="max-w-5xl mx-auto px-6">
+				<div class="text-center max-w-2xl mx-auto mb-16">
+					<h3 class="text-xs font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-2">Líneas de Trabajo</h3>
+					<h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white">
+						Áreas de Especialidad e Intereses
+					</h2>
+					<div class="w-16 h-1 bg-gradient-to-r from-blue-600 to-emerald-500 mx-auto mt-4 rounded-full"></div>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 group">
+						<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+						</div>
+						<h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Tectónica Andina y Modelado Estructural</h3>
+						<p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+							Fajas plegadas y corridas, análisis cinemático de fallas, fracturamiento natural y evolución tectónica cortical a lo largo de los Andes Centrales y Fueguinos.
+						</p>
+					</div>
+
+					<div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 group">
+						<div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+						</div>
+						<h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Análisis de Cuencas y Subsuelo</h3>
+						<p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+							Sistemas de rift y cuencas sedimentarias de antepaís. Integración de datos de pozo e interpretación sísmica 2D/3D aplicada a reservorios convencionales y no convencionales.
+						</p>
+					</div>
+
+					<div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 group">
+						<div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+						</div>
+						<h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Fotogrametría UAV y Modelos 3D</h3>
+						<p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+							Levantamientos con drones y caracterización geomécanica de macizos rocosos. Modelado 3D de afloramientos digitales (DOM) y nubes de puntos de alta densidad.
+						</p>
+					</div>
+
+					<div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 group">
+						<div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+						</div>
+						<h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Geología Computacional & Modelado</h3>
+						<p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+							Simulación física experimental en arena (sandboxes), modelos numéricos mecánicos y scripts en Python para geociencias cuantitativas y docencia universitaria.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>

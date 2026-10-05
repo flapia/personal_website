@@ -1,0 +1,221 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	lang: string;
+}
+
+const { title, lang } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navItems = lang === 'es' ? [
+	{ label: 'Inicio', href: '/es/' },
+	{ label: 'Proyectos', href: '/es/projects' },
+	{ label: 'Publicaciones', href: '/es/publications' },
+	{ label: 'Docencia', href: '/es/teaching' },
+	{ label: 'Herramientas', href: '/es/tools' },
+	{ label: 'Galería', href: '/es/gallery' },
+	{ label: 'Contacto', href: '/es/contact' },
+] : [
+	{ label: 'Home', href: '/en/' },
+	{ label: 'Projects', href: '/en/projects' },
+	{ label: 'Publications', href: '/en/publications' },
+	{ label: 'Teaching', href: '/en/teaching' },
+	{ label: 'Tools', href: '/en/tools' },
+	{ label: 'Gallery', href: '/en/gallery' },
+	{ label: 'Contact', href: '/en/contact' },
+];
+
+const targetLang = lang === 'es' ? 'en' : 'es';
+const targetHref = currentPath.replace(/^\/(es|en)/, `/${targetLang}`);
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Dr. Felipe F. Tapia Silva - Structural Geologist, CONICET Researcher & Geological Modeling Specialist" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+			if (theme === 'dark') {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
+	</head>
+	<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col justify-between">
+		
+		<!-- Sticky Top Navigation -->
+		<header class="sticky top-0 z-50 bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+			<div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+				<a href={`/${lang}/`} class="flex items-center gap-2.5 group">
+					<span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition-transform">
+						FT
+					</span>
+					<span class="font-display font-bold text-lg tracking-tight text-slate-900 dark:text-white hidden sm:inline">
+						Dr. Felipe F. Tapia
+					</span>
+				</a>
+
+				<nav class="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium">
+					{navItems.map(item => {
+						const isActive = currentPath === item.href || (item.href !== `/${lang}/` && currentPath.startsWith(item.href));
+						return (
+							<a 
+								href={item.href} 
+								class={`px-3 py-1.5 rounded-lg transition-all ${
+									isActive 
+										? 'bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold' 
+										: 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900'
+								}`}
+							>
+								{item.label}
+							</a>
+						);
+					})}
+				</nav>
+
+				<div class="flex items-center gap-3">
+					<!-- Theme Toggle Button -->
+					<button 
+						id="theme-toggle" 
+						type="button" 
+						aria-label="Toggle Dark Mode"
+						class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-colors"
+					>
+						<svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+							<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+						</svg>
+						<svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+							<path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+						</svg>
+					</button>
+
+					<!-- Language Switcher Button -->
+					<a 
+						href={targetHref} 
+						class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm"
+					>
+						{lang === 'es' ? 'EN' : 'ES'}
+					</a>
+
+					<!-- Mobile Menu Button -->
+					<button 
+						id="mobile-menu-btn"
+						type="button" 
+						aria-label="Open Mobile Menu"
+						class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Mobile dropdown menu -->
+			<div id="mobile-menu" class="hidden lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-6 py-4 space-y-2">
+				{navItems.map(item => (
+					<a 
+						href={item.href} 
+						class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
+					>
+						{item.label}
+					</a>
+				))}
+			</div>
+		</header>
+
+		<!-- Content Slot -->
+		<div class="flex-1 w-full">
+			<slot />
+		</div>
+
+		<!-- Global Footer -->
+		<footer class="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-950/50 py-12 transition-colors">
+			<div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+				<div>
+					<p class="font-display font-bold text-slate-900 dark:text-white">Dr. Felipe F. Tapia Silva</p>
+					<p class="text-sm text-slate-500 dark:text-slate-400">
+						{lang === 'es' 
+							? 'Investigador CONICET - IDEAN / LaMoGe & Docente UBA' 
+							: 'CONICET Researcher - IDEAN / LaMoGe & UBA Faculty'}
+					</p>
+				</div>
+				<div class="flex items-center gap-6 text-sm text-slate-600 dark:text-slate-400">
+					<a href="mailto:ftapia@gl.fcen.uba.ar" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Email</a>
+					<a href="https://github.com/flapia" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">GitHub</a>
+					<a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Google Scholar</a>
+					<a href={`/${lang}/contact`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+						{lang === 'es' ? 'Contacto' : 'Contact'}
+					</a>
+				</div>
+				<p class="text-xs text-slate-400">
+					&copy; {new Date().getFullYear()} Felipe F. Tapia. {lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+				</p>
+			</div>
+		</footer>
+
+		<!-- Dark Mode & Mobile Menu Client Script -->
+		<script is:inline>
+			const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+			const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+			const themeToggleBtn = document.getElementById('theme-toggle');
+			const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+			const mobileMenu = document.getElementById('mobile-menu');
+
+			// Mobile menu toggle
+			if (mobileMenuBtn && mobileMenu) {
+				mobileMenuBtn.addEventListener('click', () => {
+					mobileMenu.classList.toggle('hidden');
+				});
+			}
+
+			// Sync theme icons
+			function syncThemeIcons() {
+				if (document.documentElement.classList.contains('dark')) {
+					themeToggleLightIcon?.classList.remove('hidden');
+					themeToggleDarkIcon?.classList.add('hidden');
+				} else {
+					themeToggleDarkIcon?.classList.remove('hidden');
+					themeToggleLightIcon?.classList.add('hidden');
+				}
+			}
+
+			syncThemeIcons();
+
+			if (themeToggleBtn) {
+				themeToggleBtn.addEventListener('click', () => {
+					if (document.documentElement.classList.contains('dark')) {
+						document.documentElement.classList.remove('dark');
+						localStorage.setItem('theme', 'light');
+					} else {
+						document.documentElement.classList.add('dark');
+						localStorage.setItem('theme', 'dark');
+					}
+					syncThemeIcons();
+				});
+			}
+		</script>
+	</body>
+</html>

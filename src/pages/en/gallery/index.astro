@@ -1,0 +1,328 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Layout from '../../../layouts/Layout.astro';
+
+interface GalleryCategory {
+	id: string; // Identifier for matching files (e.g. 'malargue', 'lamoge')
+	title: string;
+	location: string;
+	description: string;
+	tag: string;
+	gradient: string;
+}
+
+const categories: GalleryCategory[] = [
+	{
+		id: "malargue",
+		title: "Malargüe Fold and Thrust Belt",
+		location: "Mendoza, Argentina",
+		description: "Syntectonic deposits and Meso-Cenozoic Andean structures analyzed through balanced cross-sections and structural modeling.",
+		tag: "Andean Tectonics",
+		gradient: "from-amber-700 via-orange-800 to-stone-900"
+	},
+	{
+		id: "andes-fueguinos",
+		title: "Fuegian Andes",
+		location: "Magallanes & Chilean Antarctica / Tierra del Fuego",
+		description: "Structural evolution, compressional kinematics, and Anisotropy of Magnetic Susceptibility (AMS) in the Fuegian orogen.",
+		tag: "Fuegian Andes",
+		gradient: "from-blue-900 via-slate-800 to-cyan-950"
+	},
+	{
+		id: "cuenca-abanico",
+		title: "Abanico Basin",
+		location: "Central Andes, Chile (33°-36°S)",
+		description: "Tectonostratigraphic evolution of Cenozoic rift systems and subsequent positive tectonic inversion in the Main Cordillera.",
+		tag: "Rift Systems",
+		gradient: "from-emerald-900 via-teal-900 to-slate-900"
+	},
+	{
+		id: "puna-austral",
+		title: "Southern Puna",
+		location: "Northwestern Argentina",
+		description: "Structural analysis, high-resolution photogrammetry, and deformation kinematics in broken foreland and plateau settings.",
+		tag: "Puna & Plateau",
+		gradient: "from-purple-900 via-indigo-900 to-slate-950"
+	},
+	{
+		id: "lamoge",
+		title: "Geological Modeling Lab (LaMoGe)",
+		location: "IDEAN - UBA, Buenos Aires",
+		description: "Physical sandbox experimental apparatus for simulating thrust sequencing, wedge kinematics, and fault reactivation.",
+		tag: "Analog Modeling",
+		gradient: "from-amber-900 via-stone-800 to-slate-900"
+	},
+	{
+		id: "san-rafael",
+		title: "San Rafael Block",
+		location: "Mendoza, Argentina",
+		description: "Oblique basement structures, Paleozoic inheritance, and their control on Meso-Cenozoic deformation and magmatic activity.",
+		tag: "Basement & Structure",
+		gradient: "from-rose-900 via-slate-900 to-zinc-950"
+	}
+];
+
+// Read available image files dynamically from public/gallery/
+const galleryDirPath = path.join(process.cwd(), 'public', 'gallery');
+let diskFiles: string[] = [];
+if (fs.existsSync(galleryDirPath)) {
+	diskFiles = fs.readdirSync(galleryDirPath).filter(file => {
+		const ext = path.extname(file).toLowerCase();
+		return ['.jpg', '.jpeg', '.png', '.webp', '.avif'].includes(ext);
+	});
+}
+
+// Map each category to its matched images (sorted naturally)
+const galleryItems = categories.map(cat => {
+	// Match pattern: "lamoge.jpg", "lamoge1.jpg", "lamoge-2.jpg", "lamoge_03.jpg" etc.
+	const idRegex = new RegExp(`^${cat.id}(?:[_-]?\\d+)?\\.[a-z0-9]+$`, 'i');
+	
+	const matchedImages = diskFiles
+		.filter(filename => idRegex.test(filename))
+		.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
+		.map(filename => `/gallery/${filename}`);
+
+	return {
+		...cat,
+		images: matchedImages,
+		coverImage: matchedImages.length > 0 ? matchedImages[0] : null
+	};
+});
+---
+
+<Layout title="Geological Gallery | Dr. Felipe F. Tapia" lang="en">
+	<main class="max-w-6xl mx-auto px-6 py-14">
+		<header class="mb-14 text-center max-w-3xl mx-auto">
+			<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-4">
+				Field Geology & Outcrops
+			</div>
+			<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display mb-4">
+				Geological Gallery
+			</h1>
+			<p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+				Field expedition photography across the Andes, key structural outcrops, and physical sandbox experiments at the analog modeling laboratory. Click on any card to view photos.
+			</p>
+		</header>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			{galleryItems.map(item => (
+				<article 
+					class="gallery-card group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between cursor-pointer"
+					data-title={item.title}
+					data-location={item.location}
+					data-description={item.description}
+					data-images={JSON.stringify(item.images)}
+				>
+					<div class={`h-60 w-full bg-gradient-to-br ${item.gradient} relative p-6 flex flex-col justify-between overflow-hidden`}>
+						
+						<!-- Cover image -->
+						{item.coverImage && (
+							<img 
+								src={item.coverImage} 
+								alt={item.title}
+								class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+								onerror="this.style.display='none';"
+							/>
+						)}
+
+						<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 group-hover:from-black/60 transition-colors duration-300"></div>
+						
+						<!-- Top tags -->
+						<div class="relative z-10 flex justify-between items-start">
+							<span class="px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-xs font-medium border border-white/20">
+								{item.tag}
+							</span>
+							
+							{item.images.length > 0 ? (
+								<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/90 backdrop-blur-md text-white text-xs font-semibold shadow-md">
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+									</svg>
+									{item.images.length} {item.images.length === 1 ? 'photo' : 'photos'}
+								</span>
+							) : (
+								<div class="w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+									</svg>
+								</div>
+							)}
+						</div>
+
+						<!-- Location -->
+						<div class="relative z-10">
+							<span class="text-xs font-medium text-emerald-200 flex items-center gap-1 drop-shadow-sm">
+								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+								{item.location}
+							</span>
+						</div>
+					</div>
+
+					<!-- Details -->
+					<div class="p-6 flex-1 flex flex-col justify-between">
+						<div>
+							<h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+								{item.title}
+							</h2>
+							<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+								{item.description}
+							</p>
+						</div>
+
+						<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+							<span>View photo collection</span>
+							<span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+						</div>
+					</div>
+				</article>
+			))}
+		</div>
+
+		<!-- Interactive Lightbox Modal -->
+		<div id="gallery-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+			<div class="relative w-full max-w-5xl bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+				
+				<!-- Modal Header -->
+				<div class="p-5 border-b border-slate-800 flex items-center justify-between">
+					<div>
+						<h3 id="modal-title" class="text-xl font-bold text-white font-display"></h3>
+						<p id="modal-location" class="text-xs text-emerald-400 flex items-center gap-1 mt-0.5"></p>
+					</div>
+					<button id="modal-close-btn" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" aria-label="Close modal">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+					</button>
+				</div>
+
+				<!-- Modal Main Display Area -->
+				<div class="relative flex-1 min-h-[350px] md:min-h-[480px] bg-black flex items-center justify-center overflow-hidden">
+					<img id="modal-img" src="" alt="Photo" class="max-h-[65vh] w-auto max-w-full object-contain mx-auto transition-opacity duration-300" />
+					
+					<div id="modal-placeholder" class="hidden text-center p-8">
+						<svg class="w-16 h-16 text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+						<p class="text-slate-400 text-sm max-w-md">No photos uploaded for this category yet. You can drop files in <code class="text-blue-400">public/gallery/</code>.</p>
+					</div>
+
+					<!-- Navigation Buttons -->
+					<button id="modal-prev-btn" class="absolute left-4 p-3 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all border border-white/10 hidden" aria-label="Previous photo">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+					</button>
+					<button id="modal-next-btn" class="absolute right-4 p-3 rounded-full bg-black/60 text-white hover:bg-black/90 transition-all border border-white/10 hidden" aria-label="Next photo">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+					</button>
+				</div>
+
+				<!-- Modal Footer -->
+				<div class="p-4 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between text-xs text-slate-400">
+					<p id="modal-desc" class="truncate max-w-xl"></p>
+					<span id="modal-counter" class="font-mono text-slate-300 font-semibold"></span>
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<script is:inline>
+	const modal = document.getElementById('gallery-modal');
+	const modalTitle = document.getElementById('modal-title');
+	const modalLocation = document.getElementById('modal-location');
+	const modalDesc = document.getElementById('modal-desc');
+	const modalImg = document.getElementById('modal-img');
+	const modalPlaceholder = document.getElementById('modal-placeholder');
+	const modalCounter = document.getElementById('modal-counter');
+	const prevBtn = document.getElementById('modal-prev-btn');
+	const nextBtn = document.getElementById('modal-next-btn');
+	const closeBtn = document.getElementById('modal-close-btn');
+
+	let currentImages = [];
+	let currentIndex = 0;
+
+	function openModal(title, location, desc, images) {
+		currentImages = images || [];
+		currentIndex = 0;
+
+		modalTitle.textContent = title;
+		modalLocation.textContent = location;
+		modalDesc.textContent = desc;
+
+		updateSlide();
+		modal.classList.remove('hidden');
+		document.body.classList.add('overflow-hidden');
+	}
+
+	function closeModal() {
+		modal.classList.add('hidden');
+		document.body.classList.remove('overflow-hidden');
+	}
+
+	function updateSlide() {
+		if (currentImages.length === 0) {
+			modalImg.classList.add('hidden');
+			modalPlaceholder.classList.remove('hidden');
+			prevBtn.classList.add('hidden');
+			nextBtn.classList.add('hidden');
+			modalCounter.textContent = "0 / 0";
+		} else {
+			modalPlaceholder.classList.add('hidden');
+			modalImg.classList.remove('hidden');
+			modalImg.src = currentImages[currentIndex];
+			modalCounter.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+
+			if (currentImages.length > 1) {
+				prevBtn.classList.remove('hidden');
+				nextBtn.classList.remove('hidden');
+			} else {
+				prevBtn.classList.add('hidden');
+				nextBtn.classList.add('hidden');
+			}
+		}
+	}
+
+	function nextSlide() {
+		if (currentImages.length > 1) {
+			currentIndex = (currentIndex + 1) % currentImages.length;
+			updateSlide();
+		}
+	}
+
+	function prevSlide() {
+		if (currentImages.length > 1) {
+			currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+			updateSlide();
+		}
+	}
+
+	document.querySelectorAll('.gallery-card').forEach(card => {
+		card.addEventListener('click', () => {
+			const title = card.getAttribute('data-title') || '';
+			const location = card.getAttribute('data-location') || '';
+			const desc = card.getAttribute('data-description') || '';
+			const imagesStr = card.getAttribute('data-images') || '[]';
+			try {
+				const images = JSON.parse(imagesStr);
+				openModal(title, location, desc, images);
+			} catch (e) {
+				openModal(title, location, desc, []);
+			}
+		});
+	});
+
+	closeBtn?.addEventListener('click', closeModal);
+	nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+	prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+
+	// Close on background click
+	modal?.addEventListener('click', (e) => {
+		if (e.target === modal) closeModal();
+	});
+
+	// Keyboard arrows and escape
+	document.addEventListener('keydown', (e) => {
+		if (modal && !modal.classList.contains('hidden')) {
+			if (e.key === 'Escape') closeModal();
+			if (e.key === 'ArrowRight') nextSlide();
+			if (e.key === 'ArrowLeft') prevSlide();
+		}
+	});
+</script>
