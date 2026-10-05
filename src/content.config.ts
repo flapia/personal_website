@@ -24,6 +24,8 @@ const projectsCollection = defineCollection({
     role: z.string().optional(),
     year: z.string(),
     location: z.string(),
+    description: z.string().optional(),
+    description_es: z.string().optional(),
     lang: z.enum(['en', 'es']).default('en'),
   })
 });
