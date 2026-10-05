@@ -10,26 +10,30 @@ const { title, lang } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const navItems = lang === 'es' ? [
-	{ label: 'Inicio', href: '/es/' },
-	{ label: 'Proyectos', href: '/es/projects' },
-	{ label: 'Publicaciones', href: '/es/publications' },
-	{ label: 'Docencia', href: '/es/teaching' },
-	{ label: 'Herramientas', href: '/es/tools' },
-	{ label: 'Galería', href: '/es/gallery' },
-	{ label: 'Contacto', href: '/es/contact' },
+	{ label: 'Inicio', href: `${base}/es/` },
+	{ label: 'Proyectos', href: `${base}/es/projects` },
+	{ label: 'Publicaciones', href: `${base}/es/publications` },
+	{ label: 'Docencia', href: `${base}/es/teaching` },
+	{ label: 'Herramientas', href: `${base}/es/tools` },
+	{ label: 'Galería', href: `${base}/es/gallery` },
+	{ label: 'Contacto', href: `${base}/es/contact` },
 ] : [
-	{ label: 'Home', href: '/en/' },
-	{ label: 'Projects', href: '/en/projects' },
-	{ label: 'Publications', href: '/en/publications' },
-	{ label: 'Teaching', href: '/en/teaching' },
-	{ label: 'Tools', href: '/en/tools' },
-	{ label: 'Gallery', href: '/en/gallery' },
-	{ label: 'Contact', href: '/en/contact' },
+	{ label: 'Home', href: `${base}/en/` },
+	{ label: 'Projects', href: `${base}/en/projects` },
+	{ label: 'Publications', href: `${base}/en/publications` },
+	{ label: 'Teaching', href: `${base}/en/teaching` },
+	{ label: 'Tools', href: `${base}/en/tools` },
+	{ label: 'Gallery', href: `${base}/en/gallery` },
+	{ label: 'Contact', href: `${base}/en/contact` },
 ];
 
 const targetLang = lang === 'es' ? 'en' : 'es';
-const targetHref = currentPath.replace(/^\/(es|en)/, `/${targetLang}`);
+const targetHref = currentPath.includes(`/${lang}`) 
+	? currentPath.replace(`/${lang}`, `/${targetLang}`)
+	: `${base}/${targetLang}/`;
 ---
 
 <!doctype html>
@@ -68,7 +72,7 @@ const targetHref = currentPath.replace(/^\/(es|en)/, `/${targetLang}`);
 		<!-- Sticky Top Navigation -->
 		<header class="sticky top-0 z-50 bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
 			<div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-				<a href={`/${lang}/`} class="flex items-center gap-2.5 group">
+				<a href={`${base}/${lang}/`} class="flex items-center gap-2.5 group">
 					<span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition-transform">
 						FT
 					</span>
@@ -166,7 +170,7 @@ const targetHref = currentPath.replace(/^\/(es|en)/, `/${targetLang}`);
 					<a href="mailto:ftapia@gl.fcen.uba.ar" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Email</a>
 					<a href="https://github.com/flapia" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">GitHub</a>
 					<a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Google Scholar</a>
-					<a href={`/${lang}/contact`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+					<a href={`${base}/${lang}/contact`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 						{lang === 'es' ? 'Contacto' : 'Contact'}
 					</a>
 				</div>
